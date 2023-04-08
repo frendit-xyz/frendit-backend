@@ -1,9 +1,9 @@
 version: '3.6'
 
 services:
-  qrt-app:
-    container_name: qrt-app
-    image: qrt-app
+  frendit-app:
+    container_name: frendit-app
+    image: frendit-app
     build:
       context: ./
       args:

@@ -8,11 +8,11 @@
 		<version>2.7.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>just.khao</groupId>
-	<artifactId>qrt</artifactId>
+	<groupId>frendit.xyz</groupId>
+	<artifactId>frendit</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>qrt</name>
-	<description>QRT API</description>
+	<name>frendit</name>
+	<description>Frendit API</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
@@ -130,7 +130,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
-		<finalName>qrt</finalName>
+		<finalName>frendit</finalName>
 	</build>
 
 </project>

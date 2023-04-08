@@ -11,4 +11,4 @@ RUN chmod +x mvnw
 RUN ./mvnw install -DskipTests
 COPY . .
 EXPOSE ${PORT}
-ENTRYPOINT ["java", "-jar", "target/qrt.jar"]
+ENTRYPOINT ["java", "-jar", "target/frendit.jar"]

@@ -5,7 +5,7 @@ spring:
   datasource:
     postgres:
       hikari:
-        jdbc-url: ${POSTGRES_URL:jdbc:postgresql://localhost:5432/qrt?currentSchema=public}
+        jdbc-url: ${POSTGRES_URL:jdbc:postgresql://localhost:5432/frendit?currentSchema=public}
         username: ${POSTGRES_USERNAME:postgres}
         password: ${POSTGRES_PASSWORD:admin}
         driver-class-name: org.postgresql.Driver
@@ -31,7 +31,7 @@ google:
 server:
   port: ${PORT:8080}
 flyway:
-  url: ${POSTGRES_URL:jdbc:postgresql://localhost:5432/qrt?currentSchema=public}
+  url: ${POSTGRES_URL:jdbc:postgresql://localhost:5432/frendit?currentSchema=public}
   username: ${POSTGRES_USERNAME:postgres}
   password: ${POSTGRES_PASSWORD:admin}
   driver-class-name: org.postgresql.Driver
