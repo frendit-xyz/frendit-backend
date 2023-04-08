@@ -1,0 +1,39 @@
+spring:
+  sql:
+    init:
+      mode: always
+  datasource:
+    postgres:
+      hikari:
+        jdbc-url: ${POSTGRES_URL:jdbc:postgresql://localhost:5432/frendit?currentSchema=public}
+        username: ${POSTGRES_USERNAME:postgres}
+        password: ${POSTGRES_PASSWORD:admin}
+        driver-class-name: org.postgresql.Driver
+        auto-commit: false
+        minimum-idle: 10
+        maximum-pool-size: 10
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+jwt:
+  accesstoken:
+    secretkey: Dp/^po=<bbbTv&<Xg%&kL#8I3sg9|u
+    expirationtime: 300000
+  refreshtoken:
+    expirationtime: 900000
+google:
+  client_id: 412190183346-1bev16hi3n99lbr85350mkeshtj5hjrp.apps.googleusercontent.com
+  project_id: encoded-stage-364413
+  auth_uri: https://accounts.google.com/o/oauth2/auth
+  token_uri: https://oauth2.googleapis.com/token
+  auth_provider_x509_cert_url: https://www.googleapis.com/oauth2/v1/certs
+  client_secret: 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
+server:
+  port: ${PORT:8080}
+flyway:
+  url: ${POSTGRES_URL:jdbc:postgresql://localhost:5432/frendit?currentSchema=public}
+  username: ${POSTGRES_USERNAME:postgres}
+  password: ${POSTGRES_PASSWORD:admin}
+  driver-class-name: org.postgresql.Driver
+  baselineOnMigrate: true
+  locations: classpath:db/migration/{vendor}

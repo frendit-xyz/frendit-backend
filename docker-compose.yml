@@ -1,0 +1,17 @@
+version: '3.6'
+
+services:
+  frendit-app:
+    container_name: frendit-app
+    image: frendit-app
+    build:
+      context: ./
+      args:
+        PORT: 8080
+    environment:
+      PORT: 8080
+      POSTGRES_USERNAME: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_URL: jdbc:postgresql://192.168.25.235:5432/postgres?currentSchema=public
+    ports:
+      - "8080:8080"
