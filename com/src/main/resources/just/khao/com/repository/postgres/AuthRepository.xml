@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="just.khao.com.repository.postgres.AuthRepository">
+    <select id="findByUsernameOrEmail" resultType="just.khao.com.entity.AuthEntity">
+        SELECT * FROM auth WHERE username = #{username} OR email = #{email}
+    </select>
+
+    <select id="findByEmail" resultType="just.khao.com.entity.AuthEntity">
+        SELECT * FROM auth WHERE email = #{email}
+    </select>
+
+    <insert id="createAuth">
+        WITH res AS (
+            INSERT INTO auth (
+                username,
+                email,
+                hashed_password
+            ) VALUES (
+                #{username},
+                #{email},
+                #{hashed_password}
+            ) RETURNING id
+        )
+        INSERT INTO profiles (
+            issuer,
+            issuer_user_id,
+            first_name,
+            last_name,
+            auth_id
+        ) VALUES (
+            'NATIVE',
+            (SELECT id::varchar FROM res),
+            #{first_name},
+            #{last_name},
+            (SELECT id FROM res)
+        )
+    </insert>
+
+    <update id="updateToken">
+        UPDATE auth SET
+            refresh_token = #{refresh_token},
+            refreshed_at = #{refreshed_at}
+        WHERE id = #{id}
+    </update>
+
+    <insert id="createGoogleAuth">
+        WITH res AS (
+            INSERT INTO auth (
+                username,
+                email,
+                verified
+            ) VALUES (
+                #{auth.username},
+                #{auth.email},
+                #{auth.email_verified}
+            ) ON CONFLICT (email)
+            DO UPDATE SET verified = EXCLUDED.verified
+            RETURNING id
+        )
+        INSERT INTO profile (
+            issuer,
+            issuer_user_id,
+            first_name,
+            last_name,
+            avatar,
+            auth_id
+        ) VALUES (
+            'GOOGLE',
+            #{google.sub},
+            #{google.family_name},
+            #{google.given_name},
+            #{google.picture},
+            (SELECT id FROM res)
+        ) ON CONFLICT (auth_id) DO NOTHING
+    </insert>
+</mapper>
