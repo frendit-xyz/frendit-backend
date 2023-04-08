@@ -1,8 +1,10 @@
 
 ## Technologies Used
 
-- React
-- OpenWeatherMap API
+- Java 
+- Spring Boot
+- MyBatis
+- Postgres
 
 ## API Documentation
 
