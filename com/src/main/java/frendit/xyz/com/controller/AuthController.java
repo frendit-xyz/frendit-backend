@@ -29,7 +29,7 @@ public class AuthController {
     }
 
     @PostMapping("/sign-up")
-    public HttpStatus SignUp(@RequestBody SignupModel signupModel) throws Exception {
+    public HttpStatus SignUp(@Valid @RequestBody SignupModel signupModel) throws Exception {
         try{
             authService.createAuth(signupModel);
             return HttpStatus.CREATED;
