@@ -2,23 +2,24 @@ package frendit.xyz.com.controller;
 
 import frendit.xyz.com.entity.AuthEntity;
 import frendit.xyz.com.entity.GoogleToken;
-import frendit.xyz.com.model.*;
+import frendit.xyz.com.model.GoogleSigninModel;
+import frendit.xyz.com.model.SigninModel;
+import frendit.xyz.com.model.SignupModel;
+import frendit.xyz.com.model.TokenModel;
 import frendit.xyz.com.service.AuthService;
 import frendit.xyz.com.service.ProfileService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.security.auth.message.AuthException;
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
     private final AuthService authService;
-    private final ProfileService profileService;
+
     public AuthController(AuthService authService, ProfileService profileService) {
         this.authService = authService;
-        this.profileService = profileService;
     }
 
     @GetMapping("/test")
