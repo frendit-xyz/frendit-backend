@@ -5,22 +5,21 @@ import lombok.Data;
 import org.springframework.http.HttpStatus;
 
 import java.util.Date;
+import java.util.Map;
 
 @Data
 public class ErrorResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private Date timestamp;
     private int status;
-    private String error;
-//    private String trace;
+    private Map<String, String> errors;
     private String message;
 
-    public ErrorResponse(Exception ex, HttpStatus httpStatus, String msg) {
+    public ErrorResponse(Exception ex, HttpStatus httpStatus, Map<String, String> errors) {
         this.timestamp = new Date();
         this.status = httpStatus.value();
-        this.error = httpStatus.name();
-//        this.trace = ex.getMessage();
-        this.message = msg.substring(0, Math.min(msg.length(), 100));
+        this.errors = errors;
+        this.message = errors.getOrDefault(errors.keySet().iterator().next(), "");
     }
 
 }

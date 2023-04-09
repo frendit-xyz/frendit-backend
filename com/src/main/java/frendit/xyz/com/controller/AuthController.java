@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.security.auth.message.AuthException;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
@@ -38,7 +39,7 @@ public class AuthController {
     }
 
     @PostMapping("/sign-in")
-    public TokenModel SignIn(@RequestBody SigninModel signinModel) throws AuthException {
+    public TokenModel SignIn(@Valid @RequestBody SigninModel signinModel) throws AuthException {
         AuthEntity authEntity = authService.findByUsernameOrEmail(
                 signinModel.getUsername(),
                 signinModel.getEmail()
