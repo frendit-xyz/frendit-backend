@@ -6,7 +6,6 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.google.gson.Gson;
 import frendit.xyz.com.entity.AuthEntity;
 import frendit.xyz.com.entity.GoogleToken;
-import frendit.xyz.com.entity.ProfileEntity;
 import frendit.xyz.com.helpers.Converter;
 import frendit.xyz.com.model.IssueTokenModel;
 import frendit.xyz.com.model.SignupModel;
@@ -17,10 +16,12 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -29,7 +30,6 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
@@ -48,14 +48,12 @@ public class AuthService {
 
     private final AuthRepository authRepository;
     private final PasswordEncoder passwordEncoder;
-    private final ProfileRepository profileRepository;
 
     private final Converter converter;
 
     public AuthService(AuthRepository authRepository, ProfileRepository profileRepository, @Lazy PasswordEncoder passwordEncoder, ProfileRepository profileRepository1, Converter converter) {
         this.authRepository = authRepository;
         this.passwordEncoder = passwordEncoder;
-        this.profileRepository = profileRepository1;
         this.converter = converter;
     }
 
@@ -77,19 +75,18 @@ public class AuthService {
     }
 
     public Boolean verifyPassword(String password, String hashed_password){
-        Boolean matched = passwordEncoder.matches(password, hashed_password);
-        return matched;
+        return passwordEncoder.matches(password, hashed_password);
     }
 
     public String getAccessToken(AuthEntity authEntity){
         Instant now = Instant.now();
-        String access_token = JWT.create()
+        return JWT.create()
                 .withSubject(authEntity.getEmail())
+                .withClaim("id", authEntity.getId())
                 .withClaim("username", authEntity.getUsername())
                 .withIssuedAt(Date.from(now))
                 .withExpiresAt(Date.from(now.plus(accessTokenExpTime, ChronoUnit.SECONDS)))
                 .sign(Algorithm.HMAC256(accessTokenSecret));
-        return access_token;
     }
 
     public String getRefreshToken() {
@@ -133,9 +130,8 @@ public class AuthService {
     }
 
     public GoogleToken extractGooleToken(String token) throws Exception {
-        String accessToken = token;
         String endpoint = "https://www.googleapis.com/oauth2/v3/userinfo";
-        String authorizationHeader = "Bearer " + accessToken;
+        String authorizationHeader = "Bearer " + token;
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -160,5 +156,10 @@ public class AuthService {
         createGoogleAuth(googleToken, signupModel);
         AuthEntity authEntity = findByEmail(googleToken.getEmail());
         return getNewToken(authEntity);
+    }
+
+    public String getEmailOfLoggedUser(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getName();
     }
 }

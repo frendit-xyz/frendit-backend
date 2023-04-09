@@ -9,6 +9,7 @@ import frendit.xyz.com.model.TokenModel;
 import frendit.xyz.com.service.AuthService;
 import frendit.xyz.com.service.ProfileService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.security.auth.message.AuthException;
@@ -29,10 +30,10 @@ public class AuthController {
     }
 
     @PostMapping("/sign-up")
-    public HttpStatus SignUp(@Valid @RequestBody SignupModel signupModel) throws Exception {
+    public ResponseEntity<String> SignUp(@Valid @RequestBody SignupModel signupModel) throws Exception {
         try{
             authService.createAuth(signupModel);
-            return HttpStatus.CREATED;
+            return ResponseEntity.status(HttpStatus.CREATED).body("Account created successfully");
         } catch(Exception e){
             throw new Exception("Account couldn't be created with provided data");
         }
