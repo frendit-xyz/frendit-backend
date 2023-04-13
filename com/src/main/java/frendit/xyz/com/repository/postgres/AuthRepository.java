@@ -1,9 +1,9 @@
 package frendit.xyz.com.repository.postgres;
 
-import frendit.xyz.com.entity.AuthEntity;
-import frendit.xyz.com.entity.GoogleToken;
-import frendit.xyz.com.model.IssueTokenModel;
-import frendit.xyz.com.model.SignupModel;
+import frendit.xyz.com.entity.auth.AuthEntity;
+import frendit.xyz.com.entity.auth.GoogleToken;
+import frendit.xyz.com.model.auth.IssueTokenModel;
+import frendit.xyz.com.model.auth.SignupModel;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

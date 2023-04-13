@@ -1,4 +1,4 @@
-package frendit.xyz.com.entity;
+package frendit.xyz.com.entity.auth;
 
 import lombok.Data;
 

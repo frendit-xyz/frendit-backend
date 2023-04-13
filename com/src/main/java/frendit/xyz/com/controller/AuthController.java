@@ -1,11 +1,11 @@
 package frendit.xyz.com.controller;
 
-import frendit.xyz.com.entity.AuthEntity;
-import frendit.xyz.com.entity.GoogleToken;
-import frendit.xyz.com.model.GoogleSigninModel;
-import frendit.xyz.com.model.SigninModel;
-import frendit.xyz.com.model.SignupModel;
-import frendit.xyz.com.model.TokenModel;
+import frendit.xyz.com.entity.auth.AuthEntity;
+import frendit.xyz.com.entity.auth.GoogleToken;
+import frendit.xyz.com.model.auth.GoogleSigninModel;
+import frendit.xyz.com.model.auth.SigninModel;
+import frendit.xyz.com.model.auth.SignupModel;
+import frendit.xyz.com.model.auth.TokenModel;
 import frendit.xyz.com.service.AuthService;
 import frendit.xyz.com.service.ProfileService;
 import org.springframework.http.HttpStatus;

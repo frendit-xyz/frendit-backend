@@ -1,4 +1,4 @@
-package frendit.xyz.com.model;
+package frendit.xyz.com.model.auth;
 
 import lombok.Data;
 

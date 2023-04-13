@@ -1,9 +1,6 @@
 package frendit.xyz.com.service;
 
-import frendit.xyz.com.entity.AuthEntity;
-import frendit.xyz.com.entity.GoogleToken;
-import frendit.xyz.com.entity.ProfileEntity;
-import frendit.xyz.com.repository.postgres.AuthRepository;
+import frendit.xyz.com.entity.profile.ProfileEntity;
 import frendit.xyz.com.repository.postgres.ProfileRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

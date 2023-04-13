@@ -1,6 +1,6 @@
 package frendit.xyz.com.controller;
 
-import frendit.xyz.com.entity.ProfileEntity;
+import frendit.xyz.com.entity.profile.ProfileEntity;
 import frendit.xyz.com.service.AuthService;
 import frendit.xyz.com.service.ProfileService;
 import org.springframework.web.bind.annotation.GetMapping;
