@@ -7,7 +7,6 @@ import frendit.xyz.com.model.auth.SigninModel;
 import frendit.xyz.com.model.auth.SignupModel;
 import frendit.xyz.com.model.auth.TokenModel;
 import frendit.xyz.com.service.AuthService;
-import frendit.xyz.com.service.ProfileService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +19,7 @@ import javax.validation.Valid;
 public class AuthController {
     private final AuthService authService;
 
-    public AuthController(AuthService authService, ProfileService profileService) {
+    public AuthController(AuthService authService) {
         this.authService = authService;
     }
 
