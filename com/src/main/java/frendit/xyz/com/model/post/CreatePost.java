@@ -16,4 +16,6 @@ public class CreatePost {
     private Timestamp publish_at;
     private String activity_details;
     private PostStatus status;
+
+    private String email;
 }

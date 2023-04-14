@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="frendit.xyz.com.repository.postgres.PostRepository">
+    <insert id="insertPost">
+        INSERT INTO posts (
+            content
+            , bg_text
+            , bg_color
+            , video_link
+            , gif_link
+            , links
+            , publish_at
+            , activity_details
+            , author_id
+            , status
+        ) VALUES (
+            #{content}
+            , #{bg_text}
+            , #{bg_color}
+            , #{video_link}
+            , #{gif_link}
+            <choose>
+                <when test="links != null">
+                <foreach item="link" collection="links" open=", array [" separator="," close="]">
+                    #{link}
+                </foreach>
+                </when>
+                <otherwise>
+                    , NULL
+                </otherwise>
+            </choose>
+            <choose>
+                <when test="publish_at != null">
+                    , TO_TIMESTAMP(#{publish_at}, 'DD-MM-YYYY HH:MI')
+                </when>
+                <otherwise>
+                    , CURRENT_TIMESTAMP
+                </otherwise>
+            </choose>
+            , #{activity_details}
+            , (SELECT id FROM auth WHERE email = #{email})
+            , #{status}
+        )
+    </insert>
+
+    <select id="countDailyPosts" resultType="integer">
+        SELECT COUNT(*) AS count
+        FROM posts
+        WHERE DATE(created_at) = CURRENT_DATE
+        AND author_id =  (SELECT id FROM auth WHERE email = #{email})
+    </select>
+
+    <select id="countPostedMinutesAgo" resultType="integer">
+        SELECT (EXTRACT('EPOCH' FROM CURRENT_TIMESTAMP - created_at) / 60)::int AS minutes_ago
+        FROM posts
+        WHERE author_id = (SELECT id FROM auth WHERE email = #{email})
+        ORDER BY created_at DESC
+        LIMIT 1;
+    </select>
+
+    <select id="findByEmail" resultType="frendit.xyz.com.entity.profile.ProfileEntity">
+        SELECT * FROM profiles WHERE auth_id=(SELECT id FROM auth WHERE email=#{email})
+    </select>
+
+    <select id="findByUsername" resultType="frendit.xyz.com.entity.profile.ProfileEntity">
+        SELECT * FROM profiles WHERE auth_id=(SELECT id FROM auth WHERE username=#{username})
+    </select>
+</mapper>

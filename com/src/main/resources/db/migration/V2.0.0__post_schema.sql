@@ -3,6 +3,19 @@ CREATE DOMAIN link AS text
 CHECK(VALUE ~ '^[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$')
 CHECK(LENGTH(VALUE) <= 250);
 
+CREATE OR REPLACE FUNCTION all_links_are_valid(links varchar[]) RETURNS BOOLEAN AS $$
+DECLARE
+    link varchar;
+BEGIN
+    FOR link IN SELECT unnest(links) LOOP
+        IF NOT (link LIKE 'http://%' OR link LIKE 'https://%') THEN
+            RETURN FALSE;
+        END IF;
+    END LOOP;
+    RETURN TRUE;
+END;
+$$ LANGUAGE plpgsql;
+
 --Index Sequences
 CREATE SEQUENCE "public".category_id_seq START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE "public".emoji_id_seq START WITH 1 INCREMENT BY 1;
@@ -82,28 +95,31 @@ CREATE TABLE "public".activities (
 );
 
 CREATE TABLE "public".posts (
-    id                   integer DEFAULT nextval('post_id_seq'::regclass) NOT NULL  ,
-    content              varchar(1500)   ,
-    bg_text              varchar(250)    ,
-    bg_color             varchar(20)    ,
-    video_link           link   ,
-    gif_link             link   ,
-    links                link[] ,
-    publish_at           timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL  ,
-    activity_details     varchar(100)   ,
-    activity_id          integer REFERENCES "public".activities( id )  ,
-    author_id            integer NOT NULL REFERENCES "public".auth( id )  ,
-    location_id          integer REFERENCES "public".locations( id )  ,
-    mood_id              integer REFERENCES "public".moods( id )  ,
-    category_id          integer REFERENCES "public".categories( id )  ,
-    status               varchar(20) CHECK (status IN ( 'DRAFT', 'PUBLISHED', 'BANNED', 'TRASHED'  ))    ,
-    can_react            boolean DEFAULT true   ,
-    can_comment          boolean DEFAULT true   ,
-    can_vote             boolean DEFAULT true   ,
-    boost                numeric DEFAULT 1  ,
-    created_at           timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL  ,
-    updated_at           timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL  ,
-    CONSTRAINT pk_post PRIMARY KEY ( id )
+    id                   integer DEFAULT nextval('post_id_seq'::regclass) NOT NULL,
+    content              varchar(1500),
+    bg_text              varchar(250),
+    bg_color             varchar(20),
+    video_link           varchar(200),
+    gif_link             varchar(200),
+    links                varchar(200)[],
+    publish_at           timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    activity_details     varchar(100),
+    activity_id          integer REFERENCES "public".activities( id ),
+    author_id            integer NOT NULL REFERENCES "public".auth( id ),
+    location_id          integer REFERENCES "public".locations( id ),
+    mood_id              integer REFERENCES "public".moods( id ),
+    category_id          integer REFERENCES "public".categories( id ),
+    status               varchar(20) DEFAULT 'PUBLISHED' CHECK (status IN ('DRAFT', 'PUBLISHED', 'BANNED', 'TRASHED')),
+    can_react            boolean DEFAULT true,
+    can_comment          boolean DEFAULT true,
+    can_vote             boolean DEFAULT true,
+    boost                numeric DEFAULT 1,
+    created_at           timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at           timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    CONSTRAINT pk_post PRIMARY KEY (id),
+    CONSTRAINT check_video_link CHECK (video_link ~* '^https:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,}(\/\S*)?$'),
+    CONSTRAINT check_gif_link CHECK (gif_link ~* '^https:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,}(\/\S*)?$'),
+    CONSTRAINT check_links CHECK (array_length(links, 1) <= 10 AND all_links_are_valid(links))
 );
 
 CREATE TABLE "public".post_views (
