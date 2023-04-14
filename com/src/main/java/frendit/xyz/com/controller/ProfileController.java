@@ -1,10 +1,10 @@
 package frendit.xyz.com.controller;
 
-import frendit.xyz.com.entity.ProfileEntity;
+import frendit.xyz.com.entity.profile.ProfileEntity;
+import frendit.xyz.com.service.AuthService;
 import frendit.xyz.com.service.ProfileService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -12,8 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProfileController {
     private final ProfileService profileService;
 
-    public ProfileController(ProfileService profileService) {
+    private final AuthService authService;
+
+    public ProfileController(ProfileService profileService, AuthService authService) {
         this.profileService = profileService;
+        this.authService = authService;
     }
 
     @GetMapping("/test")
@@ -21,16 +24,9 @@ public class ProfileController {
         return "Profile OK";
     }
 
-    @GetMapping("/retrieve")
-    public ProfileEntity findProfile(
-            @RequestParam(defaultValue = "") String email, @RequestParam(defaultValue = "") String username
-    ) throws Exception {
-        if(email != ""){
-            return profileService.findByEmail(email);
-        }
-        if(username != ""){
-            return profileService.findByUsername(username);
-        }
-        throw new Exception("Not Allowed!");
+    @GetMapping("/me")
+    public ProfileEntity findProfile() throws Exception {
+        String email = authService.getEmailOfLoggedUser();
+        return profileService.findByEmail(email);
     }
 }

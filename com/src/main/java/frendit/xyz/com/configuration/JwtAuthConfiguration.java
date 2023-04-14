@@ -3,8 +3,7 @@ package frendit.xyz.com.configuration;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.interfaces.DecodedJWT;
-import frendit.xyz.com.entity.AuthEntity;
+import frendit.xyz.com.entity.auth.AuthEntity;
 import frendit.xyz.com.service.AuthService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -39,7 +38,7 @@ public class JwtAuthConfiguration extends OncePerRequestFilter {
         final String authorizationHeader = request.getHeader("Authorization");
         String email = null;
         String access_token;
-        Boolean expired = false;
+        boolean expired = false;
         AuthEntity authEntity = null;
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {

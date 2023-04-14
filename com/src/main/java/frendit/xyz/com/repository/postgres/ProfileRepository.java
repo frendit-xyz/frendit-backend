@@ -1,7 +1,6 @@
 package frendit.xyz.com.repository.postgres;
 
-import frendit.xyz.com.entity.ProfileEntity;
-import frendit.xyz.com.model.SignupModel;
+import frendit.xyz.com.entity.profile.ProfileEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

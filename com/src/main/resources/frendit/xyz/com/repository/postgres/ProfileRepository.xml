@@ -31,11 +31,11 @@
         ON CONFLICT (auth_id) DO NOTHING;
     </insert>
 
-    <select id="findByEmail" resultType="frendit.xyz.com.entity.ProfileEntity">
+    <select id="findByEmail" resultType="frendit.xyz.com.entity.profile.ProfileEntity">
         SELECT * FROM profiles WHERE auth_id=(SELECT id FROM auth WHERE email=#{email})
     </select>
 
-    <select id="findByUsername" resultType="frendit.xyz.com.entity.ProfileEntity">
+    <select id="findByUsername" resultType="frendit.xyz.com.entity.profile.ProfileEntity">
         SELECT * FROM profiles WHERE auth_id=(SELECT id FROM auth WHERE username=#{username})
     </select>
 </mapper>
