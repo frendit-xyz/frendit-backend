@@ -1,7 +1,8 @@
 package frendit.xyz.com.controller;
 
-import frendit.xyz.com.model.post.CreatePost;
-import frendit.xyz.com.model.post.PostFrequency;
+import frendit.xyz.com.helpers.Respond;
+import frendit.xyz.com.model.post.CreatePostEntity;
+import frendit.xyz.com.model.post.CreatePostForm;
 import frendit.xyz.com.service.AuthService;
 import frendit.xyz.com.service.PostService;
 import org.springframework.http.HttpStatus;
@@ -11,32 +12,27 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/post")
 public class PostController {
     private final PostService postService;
-    private final AuthService authService;
 
-    public PostController(PostService postService, AuthService authService) {
+    private final Respond respond;
+
+    public PostController(PostService postService, AuthService authService, Respond respond) {
         this.postService = postService;
-        this.authService = authService;
+        this.respond = respond;
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> createPost (@RequestBody CreatePost createPost) throws Exception {
-        String email = authService.getEmailOfLoggedUser();
-        PostFrequency postFrequency = postService.countPostFrequency(email);
-        if(postFrequency.getDaily_post_count() >= 5){
-            throw new Exception("You have already posted 5 times today.");
-        }
-        if(postFrequency.getLast_post_ago() != -1 && postFrequency.getLast_post_ago() <= 10){
-            throw new Exception("You already posted " + postFrequency.getLast_post_ago() + " minutes ago.");
-        }
-        createPost.setEmail(email);
+    public ResponseEntity<Map<String, String>> createPost (@RequestBody CreatePostForm createPostForm) throws Exception {
+        CreatePostEntity createPostEntity = postService.validateBeforeCreate(createPostForm);
         try{
-            int count = postService.insertPost(createPost);
-            if(count == 0) throw new  Exception("Post couldn't be created with provided data");
-            return ResponseEntity.status(HttpStatus.CREATED).body("Post created successfully");
+            postService.insertPost(createPostEntity);
+            return respond.sendResponse(HttpStatus.CREATED, "Post created successfully");
         } catch(Exception e){
             throw new Exception("Post couldn't be created with provided data");
         }

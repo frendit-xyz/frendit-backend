@@ -6,14 +6,14 @@ import lombok.Data;
 import java.sql.Timestamp;
 
 @Data
-public class CreatePost {
+public class CreatePostEntity {
     private String content;
     private String bg_text;
     private String bg_color;
     private String video_link;
     private String gif_link;
     private String links;
-    private Timestamp publish_at;
+    private String publish_at;
     private String activity_details;
     private PostStatus status;
 
