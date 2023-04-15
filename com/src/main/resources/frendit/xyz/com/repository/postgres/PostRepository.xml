@@ -45,19 +45,17 @@
         )
     </insert>
 
-    <select id="countDailyPosts" resultType="integer">
-        SELECT COUNT(*) AS count
+    <select id="countPostFrequency" resultType="frendit.xyz.com.model.post.PostFrequency">
+        SELECT
+        (SELECT COUNT(*)
         FROM posts
         WHERE DATE(created_at) = CURRENT_DATE
-        AND author_id =  (SELECT id FROM auth WHERE email = #{email})
-    </select>
-
-    <select id="countPostedMinutesAgo" resultType="integer">
-        SELECT (EXTRACT('EPOCH' FROM CURRENT_TIMESTAMP - created_at) / 60)::int AS minutes_ago
+        AND author_id = (SELECT id FROM auth WHERE email = #{email})) AS count,
+        (SELECT (EXTRACT('EPOCH' FROM CURRENT_TIMESTAMP - created_at) / 60)::int
         FROM posts
         WHERE author_id = (SELECT id FROM auth WHERE email = #{email})
         ORDER BY created_at DESC
-        LIMIT 1;
+        LIMIT 1) AS minutes_ago;
     </select>
 
     <select id="findByEmail" resultType="frendit.xyz.com.entity.profile.ProfileEntity">

@@ -1,6 +1,7 @@
 package frendit.xyz.com.controller;
 
 import frendit.xyz.com.model.post.CreatePost;
+import frendit.xyz.com.model.post.PostFrequency;
 import frendit.xyz.com.service.AuthService;
 import frendit.xyz.com.service.PostService;
 import org.springframework.http.HttpStatus;
@@ -24,13 +25,12 @@ public class PostController {
     @PostMapping("/create")
     public ResponseEntity<String> createPost (@RequestBody CreatePost createPost) throws Exception {
         String email = authService.getEmailOfLoggedUser();
-        int daily_posts_count = postService.countDailyPosts(email);
-        if(daily_posts_count >= 5){
+        PostFrequency postFrequency = postService.countPostFrequency(email);
+        if(postFrequency.getDaily_post_count() >= 5){
             throw new Exception("You have already posted 5 times today.");
         }
-        int posts_tgo_count = postService.countPostedMinutesAgo(email);
-        if(posts_tgo_count <= 10){
-            throw new Exception("You already posted " + posts_tgo_count + " minutes ago.");
+        if(postFrequency.getLast_post_ago() <= 10){
+            throw new Exception("You already posted " + postFrequency.getLast_post_ago() + " minutes ago.");
         }
         createPost.setEmail(email);
         try{
