@@ -5,9 +5,9 @@ spring:
   datasource:
     postgres:
       hikari:
-        jdbc-url: ${POSTGRES_URL:jdbc:postgresql://localhost:5432/frendit?currentSchema=public}
-        username: ${POSTGRES_USERNAME:postgres}
-        password: ${POSTGRES_PASSWORD:admin}
+        jdbc-url: ${POSTGRES_URL:jdbc:postgresql://dpg-cgp3qn8u9tun42rqvreg-a.oregon-postgres.render.com:5432/frendit_postgres?currentSchema=public}
+        username: ${POSTGRES_USERNAME:frendit_postgres_user}
+        password: ${POSTGRES_PASSWORD:wZnpti4nsfkOeT9v3FooU3DIRPgo5dTe}
         driver-class-name: org.postgresql.Driver
         auto-commit: false
         minimum-idle: 10
