@@ -29,7 +29,7 @@ public class PostController {
         if(postFrequency.getDaily_post_count() >= 5){
             throw new Exception("You have already posted 5 times today.");
         }
-        if(postFrequency.getLast_post_ago() <= 10){
+        if(postFrequency.getLast_post_ago() != -1 && postFrequency.getLast_post_ago() <= 10){
             throw new Exception("You already posted " + postFrequency.getLast_post_ago() + " minutes ago.");
         }
         createPost.setEmail(email);
