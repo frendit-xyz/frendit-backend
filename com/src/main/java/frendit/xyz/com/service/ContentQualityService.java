@@ -7,6 +7,8 @@ import edu.stanford.nlp.sentiment.SentimentCoreAnnotations;
 import edu.stanford.nlp.ling.CoreAnnotations;
 
 import edu.stanford.nlp.util.CoreMap;
+import frendit.xyz.com.enums.TestStatus;
+import frendit.xyz.com.model.quality.ContentCensorModel;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -73,6 +75,24 @@ public class ContentQualityService {
                 .limit(5)
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
+    }
+
+    public ContentCensorModel shouldCensor(String text) {
+        Annotation annotation = new Annotation(text);
+        pipeline.annotate(annotation);
+        ContentCensorModel contentCensorModel = new ContentCensorModel();
+
+        List<CoreMap> sentences = annotation.get(CoreAnnotations.SentencesAnnotation.class);
+        for (CoreMap sentence : sentences) {
+            String sentiment = sentence.get(SentimentCoreAnnotations.SentimentClass.class);
+            if ("Very negative".equals(sentiment)) {
+                contentCensorModel.setText(sentence.toString());
+                contentCensorModel.setStatus(TestStatus.FAILED);
+                return contentCensorModel;
+            }
+        }
+        contentCensorModel.setStatus(TestStatus.PASSED);
+        return contentCensorModel;
     }
 
 
