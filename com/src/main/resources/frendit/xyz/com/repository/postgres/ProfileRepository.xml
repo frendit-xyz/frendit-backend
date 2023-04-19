@@ -38,4 +38,15 @@
     <select id="findByUsername" resultType="frendit.xyz.com.entity.profile.ProfileEntity">
         SELECT * FROM profiles WHERE auth_id=(SELECT id FROM auth WHERE username=#{username})
     </select>
+
+    <update id="updateProfile">
+        UPDATE profiles
+        SET
+            first_name = #{first_name},
+            last_name = #{last_name},
+            avatar = #{avatar},
+            contact_email = #{contact_email},
+            updated_at = #{updated_at}
+        WHERE profile_id = #{profile_id}
+    </update>
 </mapper>

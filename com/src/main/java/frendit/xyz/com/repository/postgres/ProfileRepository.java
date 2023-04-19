@@ -10,4 +10,11 @@ public interface ProfileRepository {
     ProfileEntity findByEmail(String email);
 
     ProfileEntity findByUsername(String username);
+
+    /**
+     * Update profile according to the request body.
+     *
+     * @param profileEntity profile to be updated
+     */
+    void updateProfile(ProfileEntity profileEntity);
 }

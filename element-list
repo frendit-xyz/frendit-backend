@@ -1,0 +1,15 @@
+frendit.xyz.com
+frendit.xyz.com.configuration
+frendit.xyz.com.controller
+frendit.xyz.com.datasource
+frendit.xyz.com.entity.auth
+frendit.xyz.com.entity.post
+frendit.xyz.com.entity.profile
+frendit.xyz.com.entity.profile.update
+frendit.xyz.com.enums
+frendit.xyz.com.error
+frendit.xyz.com.helpers
+frendit.xyz.com.model.auth
+frendit.xyz.com.model.post
+frendit.xyz.com.repository.postgres
+frendit.xyz.com.service

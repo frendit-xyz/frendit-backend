@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 
 @Data
 public class ProfileEntity {
-    private int id;
+    private int profile_id;
     private String issuer;
     private String issuer_user_id;
     private String first_name;
