@@ -9,10 +9,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class PostService {
     private final AuthService authService;
+
+    private final ContentQualityService contentQualityService;
+
     private final PostRepository postRepository;
 
-    public PostService(AuthService authService, PostRepository postRepository) {
+    public PostService(AuthService authService, ContentQualityService contentQualityService, PostRepository postRepository) {
         this.authService = authService;
+        this.contentQualityService = contentQualityService;
         this.postRepository = postRepository;
     }
 
@@ -40,11 +44,13 @@ public class PostService {
             createPostEntity.setVideo_link(createPostForm.getRich().getVideo_link());
             createPostEntity.setGif_link(createPostForm.getRich().getGif_link());
             createPostEntity.setLinks(createPostForm.getRich().getLinks());
+            createPostEntity.setTags(contentQualityService.extractTopics(createPostForm.getRich().getContent()));
         }
 
         if(createPostForm.getSimple() != null){
             createPostEntity.setBg_text(createPostForm.getSimple().getBg_text());
             createPostEntity.setBg_color(createPostForm.getSimple().getBg_color());
+            createPostEntity.setTags(contentQualityService.extractTopics(createPostForm.getSimple().getBg_text()));
         }
 
         createPostEntity.setPublish_at(createPostForm.getPublish_at());

@@ -11,6 +11,7 @@
             , video_link
             , gif_link
             , links
+            , tags
             , publish_at
             , activity_details
             , author_id
@@ -26,6 +27,16 @@
                 <foreach item="link" collection="links" open=", array [" separator="," close="]">
                     #{link}
                 </foreach>
+                </when>
+                <otherwise>
+                    , NULL
+                </otherwise>
+            </choose>
+            <choose>
+                <when test="tags != null">
+                    <foreach item="tag" collection="tags" open=", array [" separator="," close="]">
+                        #{tag}
+                    </foreach>
                 </when>
                 <otherwise>
                     , NULL

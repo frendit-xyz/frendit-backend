@@ -102,6 +102,7 @@ CREATE TABLE "public".posts (
     video_link           varchar(200),
     gif_link             varchar(200),
     links                varchar(200)[],
+    tags                 varchar(50)[],
     publish_at           timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
     activity_details     varchar(100),
     activity_id          integer REFERENCES "public".activities( id ),

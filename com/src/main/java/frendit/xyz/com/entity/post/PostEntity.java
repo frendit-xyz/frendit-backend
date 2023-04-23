@@ -23,6 +23,9 @@ public class PostEntity {
     @Getter(AccessLevel.NONE)
     private String links;
     private List<String> _links;
+    @Getter(AccessLevel.NONE)
+    private String tags;
+    private List<String> _tags;
     private Timestamp publish_at;
     private String activity_details;
     private PostStatus status;
@@ -46,6 +49,17 @@ public class PostEntity {
             return Collections.emptyList();
         }
         return Arrays.stream(links.replaceAll("[{}]", "").split(","))
+                .filter(e -> !e.equalsIgnoreCase("NULL"))
+                .distinct()
+                .collect(Collectors.toList());
+
+    }
+
+    public List<String> get_tags() {
+        if (tags == null) {
+            return Collections.emptyList();
+        }
+        return Arrays.stream(tags.replaceAll("[{}]", "").split(","))
                 .filter(e -> !e.equalsIgnoreCase("NULL"))
                 .distinct()
                 .collect(Collectors.toList());

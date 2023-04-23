@@ -4,6 +4,7 @@ import frendit.xyz.com.enums.PostStatus;
 import lombok.Data;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 public class CreatePostEntity {
@@ -16,6 +17,7 @@ public class CreatePostEntity {
     private String publish_at;
     private String activity_details;
     private PostStatus status;
+    private List<String> tags;
 
     private String email;
 }
