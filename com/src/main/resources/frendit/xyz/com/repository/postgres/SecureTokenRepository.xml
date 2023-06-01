@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="frendit.xyz.com.repository.postgres.SecureTokenRepository">
+    <select id="generateToken" resultType="string">
+        INSERT INTO secure_token
+        (
+            auth_id,
+            expires_at
+        ) VALUES (
+            (SELECT auth.id FROM auth WHERE auth.email = #{email}),
+            CURRENT_TIMESTAMP + INTERVAL '30 minutes'
+        ) ON CONFLICT (auth_id)
+        DO UPDATE SET expires_at = EXCLUDED.expires_at
+        RETURNING token;
+    </select>
+
+    <update id="verifySecureToken">
+        WITH verify AS (
+            SELECT *
+            FROM secure_token st
+            WHERE st.auth_id = (SELECT a.id FROM auth a WHERE a.email = #{email})
+            AND expires_at > CURRENT_TIMESTAMP
+            AND token = LOWER(#{token})
+        )
+        UPDATE auth
+        SET verified = true
+        WHERE id = (SELECT a.id FROM auth a WHERE a.email = #{email})
+        AND EXISTS (SELECT 1 FROM verify);
+    </update>
+</mapper>

@@ -16,6 +16,20 @@ spring:
     static-locations: classpath:/stanford-postagger-2018-10-16/
   configuration:
     map-underscore-to-camel-case: true
+  mail:
+    protocol: smtp
+    test-connection: false
+    host: smtp.gmail.com
+    port: 587
+    username: no-reply@micol.life
+    password: fclfrwjxpayuvuhl
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+        debug: true
 jwt:
   accesstoken:
     secretkey: Dp/^po=<bbbTv&<Xg%&kL#8I3sg9|u

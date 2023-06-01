@@ -48,26 +48,31 @@ public class AuthService {
 
     private final AuthRepository authRepository;
     private final PasswordEncoder passwordEncoder;
-
+    private final SecureTokenService secureTokenService;
     private final Converter converter;
 
-    public AuthService(AuthRepository authRepository, ProfileRepository profileRepository, @Lazy PasswordEncoder passwordEncoder, ProfileRepository profileRepository1, Converter converter) {
+    public AuthService(AuthRepository authRepository, ProfileRepository profileRepository, @Lazy PasswordEncoder passwordEncoder, ProfileRepository profileRepository1, SecureTokenService secureTokenService, Converter converter) {
         this.authRepository = authRepository;
         this.passwordEncoder = passwordEncoder;
+        this.secureTokenService = secureTokenService;
         this.converter = converter;
     }
 
-    public AuthEntity findByUsernameOrEmail(String username, String email){
-        return authRepository.findByUsernameOrEmail(username, email);
+    public AuthEntity findByUsernameOrEmail(String username, String email) throws Exception {
+        AuthEntity authEntity = authRepository.findByUsernameOrEmail(username, email);
+        if(authEntity == null) throw new Exception("User not found using given credentials");
+        return authEntity;
     }
 
     public AuthEntity findByEmail(String email){
         return authRepository.findByEmail(email);
     }
 
+    @Transactional
     public void createAuth(SignupModel signupModel){
         signupModel.setHashed_password(passwordEncoder.encode(signupModel.getPassword()));
         authRepository.createAuth(signupModel);
+        String token = secureTokenService.generateToken(signupModel.getEmail());
     }
 
     public void createGoogleAuth(GoogleToken googleToken, SignupModel signupModel){
