@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "eafad425-c4b7-4169-b923-427df0faa4a5",
+		"_postman_id": "3e3cf050-ae7c-43d9-b7b8-eddb9325bf00",
 		"name": "Frendit",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "7491622"
@@ -44,7 +44,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"sayed-rafi\",\r\n    \"first_name\": \"Sayed\",\r\n    \"last_name\": \"Rafi\",\r\n    \"email\": \"rafi@gmail.com\",\r\n    \"password\": \"1142\"\r\n}",
+							"raw": "{\r\n    \"username\": \"sayed-rafi\",\r\n    \"first_name\": \"Sayed\",\r\n    \"last_name\": \"Rafi\",\r\n    \"email\": \"sayed-rafi@gmail.com\",\r\n    \"password\": \"1142\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -118,6 +118,64 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Verify",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var json = pm.response.json();\r",
+									"pm.environment.set(\"accessToken\", json.accessToken);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "default",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{ACCESS_TOKEN}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"mohammad-abir\",\r\n    \"password\": \"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/auth/verify/65b13760-d1d5-4992-81d6-dc9f0c6a273d",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"verify",
+								"65b13760-d1d5-4992-81d6-dc9f0c6a273d"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -144,6 +202,17 @@
 								"profile",
 								"me"
 							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Profile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
 						}
 					},
 					"response": []
@@ -181,6 +250,92 @@
 							"path": [
 								"post",
 								"create"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Quality",
+			"item": [
+				{
+					"name": "Rate Content",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"text\": \"I've read a lot about cultural rules of Japan and about how one of them is that Japanese people generally don't make direct eye contact with each other because it can be uncomfortable. If this is true, then why as a foreigner do you frequently get stared at (especially in a residential area) when you're just going about your day/minding your own business? I've had everything from people turning completely to the side to stare at me to getting straight up dirty looks while walking around my neighborhood.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/quality/rate",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"quality",
+								"rate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Tag Content",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"text\": \"I've read a lot about cultural rules of Japan and about how one of them is that Japanese people generally don't make direct eye contact with each other because it can be uncomfortable. If this is true, then why as a foreigner do you frequently get stared at (especially in a residential area) when you're just going about your day/minding your own business? I've had everything from people turning completely to the side to stare at me to getting straight up dirty looks while walking around my neighborhood.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/quality/tags",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"quality",
+								"tags"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Content",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"text\": \"I've read a lot about cultural rules of Japan and about how one of them is that Japanese people generally don't make direct eye contact with each other because it can be uncomfortable. If this is true, then why as a foreigner do you frequently get stared at (especially in a residential area) when you're just going about your day/minding your own business? I've had everything from people turning completely to the side to stare at me to getting straight up dirty looks while walking around my neighborhood.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/quality/check",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"quality",
+								"check"
 							]
 						}
 					},
