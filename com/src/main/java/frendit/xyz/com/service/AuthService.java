@@ -72,7 +72,7 @@ public class AuthService {
     public void createAuth(SignupModel signupModel){
         signupModel.setHashed_password(passwordEncoder.encode(signupModel.getPassword()));
         authRepository.createAuth(signupModel);
-        String token = secureTokenService.generateToken(signupModel.getEmail());
+        secureTokenService.generateToken(signupModel.getEmail());
     }
 
     public void createGoogleAuth(GoogleToken googleToken, SignupModel signupModel){

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="frendit.xyz.com.repository.postgres.AdminRepository">
+    <select id="getRoleByEmail" resultType="string">
+        SELECT role FROM admin ad WHERE ad.auth_id = (
+            SELECT au.id FROM auth au WHERE au.email = #{email}
+        )
+    </select>
+</mapper>

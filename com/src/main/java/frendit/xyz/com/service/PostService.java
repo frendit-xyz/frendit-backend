@@ -5,6 +5,7 @@ import frendit.xyz.com.model.post.CreatePostForm;
 import frendit.xyz.com.model.post.PostFrequency;
 import frendit.xyz.com.repository.postgres.PostRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PostService {
@@ -28,6 +29,7 @@ public class PostService {
         return postRepository.countPostFrequency(email);
     }
 
+    @Transactional
     public CreatePostEntity validateBeforeCreate(CreatePostForm createPostForm) throws Exception {
         String email = authService.getEmailOfLoggedUser();
         PostFrequency postFrequency = postRepository.countPostFrequency(email);
